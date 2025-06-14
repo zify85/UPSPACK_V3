@@ -5,6 +5,7 @@ import os
 import time
 from threading import Thread
 
+
 def shutdown_check():
     print("start shutdown check")
     shutdown_pin = 18
