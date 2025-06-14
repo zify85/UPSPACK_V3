@@ -30,9 +30,9 @@ def powerloss_check():
             continue
         
         # Power loss detected - start counting
-        print("Power loss detected, starting timer...")
+        print(f"Power loss detected, starting timer... Battery: {batcap}%")
         cur_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        power_loss_log = f"Power loss detected at: {cur_time}\n"
+        power_loss_log = f"Power loss detected at: {cur_time}, Battery capacity: {batcap}%\n"
         write_log(power_loss_log)
         
         power_loss_time = 0
@@ -40,12 +40,18 @@ def powerloss_check():
         while vin == "NG":  # While power is still lost
             time.sleep(1)  # Wait 1 second
             power_loss_time += 1
-            print(f"Power lost for {power_loss_time} seconds")
+            print(f"Power lost for {power_loss_time} seconds, Battery: {batcap}%")
+            
+            # Log battery level every 10 seconds during power loss
+            if power_loss_time % 10 == 0:
+                cur_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+                battery_log = f"Power loss {power_loss_time}s - Battery level: {batcap}% at {cur_time}\n"
+                write_log(battery_log)
             
             # Check if power loss exceeds 60 seconds
             if power_loss_time >= 60:
                 cur_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-                shutdown_log = f"Power loss exceeded 60 seconds at: {cur_time}, shutting down...\n"
+                shutdown_log = f"Power loss exceeded 60 seconds at: {cur_time}, Final battery capacity: {batcap}%, shutting down...\n"
                 write_log(shutdown_log)
                 break
             
@@ -58,7 +64,7 @@ def powerloss_check():
         else:
             print(f"Power restored after {power_loss_time} seconds, resetting counter")
             cur_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-            power_restore_log = f"Power restored at: {cur_time} (after {power_loss_time} seconds)\n"
+            power_restore_log = f"Power restored at: {cur_time} (after {power_loss_time} seconds), Battery capacity: {batcap}%\n"
             write_log(power_restore_log)
 
     print("active halt...")
