@@ -3,7 +3,7 @@
 import os
 import time
 from threading import Thread
-from .UPS_GUI_py.upspackv2 import UPS2
+from UPS_GUI_py import UPS2
 
 # Script to monitor power loss and log events using a UART connection to a UPS device.
 
