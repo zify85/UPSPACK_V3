@@ -1,5 +1,15 @@
 [Update firmware tutorial](./update_ups_fw_en.md)
 
+# Powerloss Check
+Added powerloss_check.py to use UART to detect when power is turned off.  This is usefull for detecting an automobile ignition switch being turned off and on.  
+
+Logic
+1. Switch turned on - do nothing
+2. Switch turned off - wait for 60 seconds then shutdown pi
+3. If power is restored within 60 seconds then restart the sequence.  
+
+The purpose of the 60 second rule us to allow the ignition switch to be turned on and off for various reasons and still be able to run your TS Dash.  
+
 # RPi UPSPack V3 Product User Guide
 
 UPSPack v3 is the latest model of the new generation of Raspberry Pie UPS uninterruptible power supply expansion boards released in September 2020. Based on iterative upgrades from previous v1 and v2 versions, v3 is the most stable power supply solution available for Raspberry Pie.
